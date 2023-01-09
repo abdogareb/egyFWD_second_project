@@ -38,7 +38,11 @@ const index = async (_req: express.Request, res: express.Response) => {
 };
 const show = async (req: express.Request, res: express.Response) => {
   try {
-    const order: Order = await store.show(parseInt(req.params.id));
+    const authorizationHeader = req.headers.authorization;
+    const token = (authorizationHeader as string).split(' ')[1];
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET as string);
+    const userId: number = (decoded as jwt.JwtPayload).user.id;
+    const order: Order = await store.show(parseInt(req.params.id), userId);
     res.json(order);
   } catch (err) {
     res.status(400).json((err as Error).message);
@@ -108,9 +112,9 @@ const verifyAuthTokenOrder = (
 const order_routes = (app: express.Application) => {
   app.get('/currentOrder/:userId', verifyAuthToken, currentOrderByUser);
   app.get('/completedOrders/:userId', verifyAuthToken, completedOrdersByUser);
-  app.get('/orders', index);
-  app.get('/orders/:id', show);
-  app.post('/orders', create);
+  app.get('/orders', verifyAuthTokenOrder, index);
+  app.get('/orders/:id', verifyAuthTokenOrder, show);
+  app.post('/orders', verifyAuthTokenOrder, create);
   app.post('/orders/:orderId/product', verifyAuthTokenOrder, createOrderProduct);
 };
 

@@ -62,8 +62,17 @@ export class OrderStore {
       throw new Error(`Could not get orders. Error: ${(err as Error).message}`);
     }
   }
-  async show(id: number): Promise<Order> {
+  async show(id: number, userId: number): Promise<Order> {
     try {
+      const orderSql = 'SELECT * FROM orders WHERE id=($1)';
+      const orderConn = await Client.connect();
+
+      const orderResult = await orderConn.query(orderSql, [id]);
+
+      const order = orderResult.rows[0];
+      if (parseInt(order.user_id) !== userId) {
+        throw new Error(`unauthorized user`);
+      }
       const sql = 'SELECT * FROM orders WHERE id=($1)';
       const conn = await Client.connect();
 

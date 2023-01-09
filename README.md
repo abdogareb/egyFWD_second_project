@@ -4,7 +4,14 @@
 
 - you should create a .env file in the repo, it should contain the variable as in the .env.example file
 
-- you should create two databases with the values you set in POSTGRES_DB,POSTGRES_TEST_DB
+- you should create two databases with the values you set in POSTGRES_DB,POSTGRES_TEST_DB, This is an example of the SQL needed when connected to psql
+  `CREATE USER shopping_user with password= 'password';
+CREATE DATABASE store_dev;
+\C store_dev
+GRANT ALL PRIVILEGES ON DATABASE store_dev TO shopping_user;
+CREATE DATABASE store_test;
+\C store_test
+GRANT ALL PRIVILEGES ON DATABASE store_test TO shopping_user;`
 
 - To start the app run `npm run start`
 
