@@ -12,9 +12,9 @@
 
 ## 1. DB creation and Migrations
 
-- to run migrations up on dev environment run 'npm run dev-startup' and to run migrations down run 'npm run dev-resetdb'
+- to run migrations up on dev environment run `npm run dev-startup` and to run migrations down run `npm run dev-resetdb`
 
-- no migrations is needed to run the tests as the test script will do the up and down migrations. but if you want to run migrations up on test use 'npm run dbtest-up' and to run down run 'npm run dbtest-down'
+- no migrations is needed to run the tests as the test script will do the up and down migrations. but if you want to run migrations up on test use `npm run dbtest-up` and to run down run `npm run dbtest-down`
 
 ## 2. API endpoints
 
